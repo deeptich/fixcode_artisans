@@ -16,37 +16,27 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
     const [formData, setFormData ] = useState({
       query: ''
       });
-      
-    const searchHandler = async (event) => {
-      const config = {
-        headers: {
-          'content-type': 'multipart/form-data'
-        }
-      };
-      const searchData = event.target.value;
-      console.log('searchData', searchData);
 
-      const data = new FormData();
-      data.append('query', searchData)
-  
-      console.log(data);
-      const req = await axios.get('/api/search/search', data, config)
-  
-      console.log('resi', req)
-  
+    const searchHandler = async (event) => {
+      const searchTerm = event.target.value;
+      console.log('searchTerm', searchTerm);
+      const response = await axios.post('/api/search/search', { searchTerm })
+
+      console.log('repsonse: ', response)
+
       setFormData({
         ...formData,
-        query: req.data,
+        query: response.data,
       });
     };
     return (
       <Fragment>
-        {loading ? ( <Spinner />) : 
+        {loading ? ( <Spinner />) :
         (  <Fragment>
-            <section className="slider d-flex align-items-center">        
+            <section className="slider d-flex align-items-center">
              <div className="container">
                <div className="row d-flex justify-content-center">
-                  
+
                       <div className="col-md-12">
                         <div className="slider-title_box">
                            <div className="row">
@@ -55,25 +45,25 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                                         <h1>Discover great places in Himalayas</h1>
                                           <h5>Let's uncover the best places to shop and visit near you!</h5>                                                </div>
                                     </div>
-                                </div>     
+                                </div>
                             </div>
                         <div className="row d-flex justify-content-center">
                             <div className="col-md-10">
                                 <form className="form-wrap mt-4">
                                     <div className="btn-group" role="group" aria-label="Basic example">
                                         <input type="text" placeholder="What are your looking for?" className="btn-group1" />
-                                        <input 
-                                        type="text" 
-                                        name="query" 
-                                        placeholder="New york" 
+                                        <input
+                                        type="text"
+                                        name="query"
+                                        placeholder="New york"
                                         className="btn-group2"
                                         onChange={event => searchHandler(event)}
                                          />
-                                        <button 
-                                        type="submit" 
-                                        className="btn-form"><span 
+                                        <button
+                                        type="submit"
+                                        className="btn-form"><span
                                         className="icon-magnifier search-icon">
-                                        </span>SEARCH<i 
+                                        </span>SEARCH<i
                                         className="pe-7s-angle-right">
                                         </i>
                                         </button>
@@ -83,11 +73,11 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                                     <a href="www.samaun.com">Browse Popular</a><span>or</span> <a href="www.samaun.com">Recently Added</a>
                                 </div>
                             </div>
-                        </div>                          
                         </div>
-                </div>  
-              </div>         
-        </section>          
+                        </div>
+                </div>
+              </div>
+        </section>
             <h1 className='large text-primary'>Artisans</h1>
                 <section className="main-block light-bg">
                      <div className="container">
@@ -98,13 +88,13 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                                 </div>
                             </div>
                         </div>
-                        
+
                             <div className='profiles'>
                                 <div className="row">
                                 {profiles.length > 0 ? (
                                   profiles.map(profile => (
                                         <div className="col-md-4 featured-responsive">
-                                         
+
                                         </div>
                                 ))
                                 ) : (
@@ -114,15 +104,15 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                             </div>
                         </div>
                 </section>
-                 
+
     <footer className="main-block dark-bg">
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
                         <div className="copyright">
-                            
+
                             <p>Copyright &copy; 2020 Listing. All rights reserved </p>
-                            
+
                             <ul>
                                 <li><a href="www.facebook.com"><span className="fab fa-facebook fa-1x"></span></a></li>
                                 <li><a href="www.twitter.com"><span className="fab fa-twitter fa-1x"></span></a></li>
@@ -133,25 +123,24 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                 </div>
             </div>
         </footer>
-                                             
+
 
           </Fragment>
         )}
       </Fragment>
     );
   };
-  
+
   Profiles.propTypes = {
     getProfiles: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired
   };
-  
+
   const mapStateToProps = state => ({
     profile: state.profile
   });
-  
+
   export default connect(
     mapStateToProps,
     { getProfiles }
   )(Profiles);
-  
